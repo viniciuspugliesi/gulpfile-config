@@ -93,7 +93,7 @@ gulp.task('fonts', () => {
 	gulp.src(assets.fonts.map((pos) => {
 			return pos + '**/*.{eot,svg,ttf,woff,woff2}'
 		}))
-		.pipe($.if(dev, gulp.dest('.tmp/fonts'), gulp.dest('dist/fonts')));
+		.pipe(gulp.dest(paths.dest.font));
 });
 
 // Watch taks
@@ -104,8 +104,8 @@ gulp.task('watch', () => {
     gulp.watch(paths.src.js, ['js']);
     gulp.watch(assets.js, ['js-vendor']);
     gulp.watch(paths.src.image, ['image']);
-    gulp.watch(paths.src.font, ['font']);
+    gulp.watch(paths.src.fonts, ['fonts']);
 });
 
 // Default task
-gulp.task('default', ['html', 'sass', 'css-vendor', 'js', 'js-vendor', 'image', 'font', 'watch']);
+gulp.task('default', ['html', 'sass', 'css-vendor', 'js', 'js-vendor', 'image', 'fonts', 'watch']);
