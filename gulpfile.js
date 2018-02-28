@@ -39,8 +39,6 @@ gulp.task('sass', () => {
         .pipe(cssmin())
         .pipe(plumber.stop())
         .pipe(gulp.dest(paths.dest.sass))
-        .pipe(beautifycss())
-        .pipe(gulp.dest(paths.dest.beauty.sass))
         .pipe(reload({stream: true}));
 });
 
@@ -48,9 +46,7 @@ gulp.task('sass', () => {
 gulp.task('css-vendor', () => {
     gulp.src(assets.css)
         .pipe(plumber())
-        .pipe(concat('vendor.css'))
-        .pipe(gulp.dest(paths.dest.sass))
-        .pipe(rename('vendor.min.css'))
+        .pipe(concat('vendor.min.css'))
         .pipe(cssmin())
         .pipe(plumber.stop())
         .pipe(gulp.dest(paths.dest.sass))
@@ -72,9 +68,7 @@ gulp.task('js', () => {
 gulp.task('js-vendor', () => {
     gulp.src(assets.js)
         .pipe(plumber())
-        .pipe(concat('vendor.js'))
-        .pipe(gulp.dest(paths.dest.js))
-        .pipe(rename('vendor.min.js'))
+        .pipe(concat('vendor.min.js'))
         .pipe(uglify().on('error', gutil.log))
         .pipe(plumber.stop())
         .pipe(gulp.dest(paths.dest.js))
@@ -89,11 +83,12 @@ gulp.task('image', () => {
 });
 
 // Font task
-gulp.task('fonts', () => {
-	gulp.src(assets.fonts.map((pos) => {
-			return pos + '**/*.{eot,svg,ttf,woff,woff2}'
-		}))
-		.pipe(gulp.dest(paths.dest.font));
+gulp.task('font', () => {
+    gulp.src(assets.font + '**/*.{eot,svg,ttf,woff,woff2}')
+        .pipe(gulp.dest(paths.dest.font));
+        
+    gulp.src(paths.src.font)
+        .pipe(gulp.dest(paths.dest.font));
 });
 
 // Watch taks
@@ -104,8 +99,8 @@ gulp.task('watch', () => {
     gulp.watch(paths.src.js, ['js']);
     gulp.watch(assets.js, ['js-vendor']);
     gulp.watch(paths.src.image, ['image']);
-    gulp.watch(paths.src.fonts, ['fonts']);
+    gulp.watch(paths.src.font, ['font']);
 });
 
 // Default task
-gulp.task('default', ['html', 'sass', 'css-vendor', 'js', 'js-vendor', 'image', 'fonts', 'watch']);
+gulp.task('default', ['html', 'sass', 'css-vendor', 'js', 'js-vendor', 'image', 'font', 'watch']);
